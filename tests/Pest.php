@@ -13,6 +13,14 @@
 
 // uses(Tests\TestCase::class)->in('Feature');
 
+use Hyvor\JsonExporter\Writer;
+
+uses()->beforeEach(function() {
+    $this->fileInMemory = 'php://memory';
+    $this->writer = new Writer($this->fileInMemory);
+    Writer::$SAVE = true;
+})->in('Unit');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

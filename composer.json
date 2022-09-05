@@ -1,6 +1,6 @@
 {
     "name": "hyvor/json-exporter",
-    "description": "Export large datasets from your database to a JSON file without memory exhaustion",
+    "description": "Export large datasets to a JSON file without memory exhaustion",
     "type": "library",
     "license": "MIT",
     "autoload": {

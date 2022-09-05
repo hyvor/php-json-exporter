@@ -9,6 +9,13 @@ class Writer
 {
 
     /**
+     * For testing only
+     * Set $SAVE to true to save all written content in $written
+     */
+    public static bool $SAVE = false;
+    public string $written = '';
+
+    /**
      * @var resource
      */
     private $handler;
@@ -38,6 +45,10 @@ class Writer
 
         if (!$wrote) {
             throw new FileWriteException($this->filename, $str);
+        }
+
+        if (self::$SAVE) {
+            $this->written .= $str;
         }
     }
 

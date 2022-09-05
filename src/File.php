@@ -3,12 +3,13 @@
 namespace Hyvor\JsonExporter;
 
 use Hyvor\JsonExporter\Exception\FileOpenException;
-use Hyvor\JsonExporter\Exception\FileWriteException;
 
 class File
 {
 
     private Writer $writer;
+
+    private Collection $lastCollection;
 
     /**
      * @param string $filename The filename (with absolute or relative path) to write JSON to
@@ -20,31 +21,39 @@ class File
         $this->start();
     }
 
-
-    public function collection(string $key)
+    public function collection(string $key): Collection
     {
+        if (isset($this->lastCollection)) {
+            $this->lastCollection->endWithComma();
+        }
 
         $collection = new Collection($key, $this->writer);
 
+        $this->lastCollection = $collection;
+
+        return $collection;
     }
 
-    private function start()
+    private function start() : void
     {
-        $this->write("{");
+        $this->writer->write("{");
     }
 
-    private function end()
+    public function end() : self
     {
-        $this->write("}");
-    }
 
-    private function write(string $str)
-    {
-        $wrote = fwrite($this->handler, $str);
-
-        if (!$wrote) {
-            throw new FileWriteException($this->filename, $str);
+        if (isset($this->lastCollection)) {
+            $this->lastCollection->end();
         }
+
+        $this->writer->write("}");
+
+        return $this;
+    }
+
+    public function written() : string
+    {
+        return $this->writer->written;
     }
 
 }
