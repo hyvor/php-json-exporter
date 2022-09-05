@@ -1,0 +1,29 @@
+{
+    "name": "hyvor/json-exporter",
+    "description": "Export large datasets from your database to a JSON file without memory exhaustion",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hyvor\\JsonExporter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Supun",
+            "email": "supun@hyvor.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.8",
+        "pestphp/pest": "^1.22"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
