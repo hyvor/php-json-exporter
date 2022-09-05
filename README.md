@@ -30,6 +30,12 @@ You can create a JSON file with the following format.
 
 Each object `{}` is a representation of a row in a table of your database. The arrays are expected to be long (contains a lot of objects/rows).
 
+## Installation
+
+```bash
+composer require hyvor/php-json-exporter
+```
+
 ## Usage
 
 ```php
@@ -81,7 +87,3 @@ User::chunk(200, function ($users) {
 
 $file->end();
 ```
-
-## After Creating?
-
-At Hyvor Talk and Hyvor Blogs, we 
