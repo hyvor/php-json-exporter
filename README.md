@@ -12,7 +12,7 @@ This library is a solution for a specific problem. Here is how it was born:
 
 You can create a JSON file with the following format.
 
-```json
+```jsonc
 {
     "collection-1": [
         // an array of objects (rows)
@@ -54,7 +54,7 @@ $file->end();
 
 In the above example, `getUsers()` and `getPosts()` are hypothetical functions that returns a limited number of records (100) as an array, and they support an offset parameter to skip already added records. Usually, you would call the `addItems()` method inside a loop or callback (See Laravel example below). The JSON output of the above example will look like this:
 
-```json
+```jsonc
 {
     "users": [
         // array of JSON-encoded user objects
