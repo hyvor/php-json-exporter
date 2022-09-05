@@ -1,5 +1,5 @@
 {
-    "name": "hyvor/json-exporter",
+    "name": "hyvor/php-json-exporter",
     "description": "Export large datasets to a JSON file without memory exhaustion",
     "type": "library",
     "license": "MIT",
