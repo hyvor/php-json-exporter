@@ -16,7 +16,7 @@ class Collection
     }
 
     /**
-     * @param array<object|array|string> $items
+     * @param array<object|array<mixed>|string> $items
      */
     public function addItems(array $items) : self
     {
