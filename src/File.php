@@ -34,6 +34,11 @@ class File
         return $collection;
     }
 
+    public function single(string $key):object{
+        $single = new Single($key, $this->writer);
+        return $single;
+    }
+
     private function start() : void
     {
         $this->writer->write("{");

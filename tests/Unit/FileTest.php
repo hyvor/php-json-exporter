@@ -2,6 +2,7 @@
 
 use Hyvor\JsonExporter\Collection;
 use Hyvor\JsonExporter\File;
+use Hyvor\JsonExporter\Single;
 use Hyvor\JsonExporter\Writer;
 
 it('opens and closes file', function() {
@@ -19,5 +20,14 @@ it('gives a collection', function() {
     $collection = $file->collection('col-1');
 
     expect($collection)->toBeInstanceOf(Collection::class);
+
+});
+
+it('gives a single value', function() {
+
+    $file = new File($this->fileInMemory);
+    $object = $file->single('key');
+
+    expect($object)->toBeInstanceOf(Single::class);
 
 });
