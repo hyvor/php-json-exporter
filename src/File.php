@@ -10,6 +10,7 @@ class File
     private Writer $writer;
 
     private Collection $lastCollection;
+    private Value $lastValue;
 
     /**
      * @param string $filename The filename (with absolute or relative path) to write JSON to
@@ -34,9 +35,16 @@ class File
         return $collection;
     }
 
-    public function single(string $key):object{
-        $single = new Single($key, $this->writer);
-        return $single;
+    public function value(string $key, mixed $value):object{
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
+        }
+
+        $value = new Value($this->writer);
+        $value->addValue($key, $value);
+
+        $this->lastValue = $value;
+        return $value;
     }
 
     private function start() : void
@@ -49,6 +57,9 @@ class File
 
         if (isset($this->lastCollection)) {
             $this->lastCollection->end();
+        }
+        if (isset($this->lastValue)) {
+            $this->lastValue->end();
         }
 
         $this->writer->write("}");

@@ -1,42 +1,32 @@
 <?php
 
-use Hyvor\JsonExporter\File;
+use Hyvor\JsonExporter\Value;
 
 it('adds items - strings', function() {
+    $value = new Value($this->writer);
+    $value->addValue('name', 'supun');
+    $value->addValue('name', 'ishini');
+    $value->end();
 
-    $file = new File('php://memory');
-    $single = $file->single('name');
-
-    $single->addValue('Rajitha chandimal');
-
-    $file->end();
-    $json = json_decode($file->written(), true);
-
-    expect($json['name'])->toBeString();
+    expect($this->writer->written)->toBe('[{"name":"supun"},{"name":"ishini"}]');
 });
 
 it('adds items - number', function() {
 
-    $file = new File('php://memory');
-    $single = $file->single('age');
-    $single->addValue(18);
-    $file->end();
+    $value = new Value($this->writer);
+    $value->addValue('websites', 4);
+    $value->addValue('pages', 34);
+    $value->addValue('comments', 90);
+    $value->end();
 
-    $json = json_decode($file->written(), true);
-
-    expect($json['age'])->toBeNumeric();
+    expect($this->writer->written)->toBe('[{"websites":4},{"pages":34},{"comments":90}]');
 });
 
 it('adds items - array', function() {
 
-    $file = new File('php://memory');
-    $single = $file->single('students');
+    $value = new Value($this->writer);
+    $value->addValue('students', ["student1","student2","student3"]);
+    $value->end();
 
-    $single->addValue(["student1", "student2", "student3"]);
-
-    $file->end();
-
-    $json = json_decode($file->written(), true);
-    expect($json['students'])->toBeArray();
-    expect(count($json['students']))->toBe(3);
+    expect($this->writer->written)->toBe('[{"students":["student1","student2","student3"]}]');
 });
