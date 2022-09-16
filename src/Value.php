@@ -16,7 +16,7 @@ class Value
     public function addValue(string $key, mixed $value) : self
     {
         $all = "";
-        $json = json_encode([$key => $value]);
+        $json = "\"$key\":". json_encode($value);
         if ($this->itemsCount > 0) {
             $all .= ",";
         }

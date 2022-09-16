@@ -24,13 +24,13 @@ class File
 
     public function collection(string $key): Collection
     {
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->endWithComma();
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
         }
 
         $collection = new Collection($key, $this->writer);
 
-        $this->lastCollection = $collection;
+        $this->lastValue = $collection;
 
         return $collection;
     }
@@ -54,10 +54,6 @@ class File
 
     public function end() : self
     {
-
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->end();
-        }
         if (isset($this->lastValue)) {
             $this->lastValue->end();
         }
