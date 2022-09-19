@@ -8,9 +8,7 @@ class File
 {
 
     private Writer $writer;
-
-    private Collection $lastCollection;
-    private Value $lastValue;
+    private ShouldEnd $lastValue;
 
     /**
      * @param string $filename The filename (with absolute or relative path) to write JSON to
@@ -41,7 +39,6 @@ class File
         }
 
         $value = new Value($this->writer);
-        $value->addValue($key, $value);
 
         $this->lastValue = $value;
         return $value;
