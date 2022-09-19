@@ -10,7 +10,7 @@ class Value implements ShouldEnd
      */
     public function __construct(private Writer $writer)
     {
-        $this->writer->write("[");
+        $this->writer->write("{");
     }
 
     public function addValue(string $key, mixed $value) : self
@@ -30,11 +30,11 @@ class Value implements ShouldEnd
 
     public function end() : void
     {
-        $this->writer->write(']');
+        $this->writer->write('}');
     }
 
     public function endWithComma() : void
     {
-        $this->writer->write("],");
+        $this->writer->write("},");
     }
 }
