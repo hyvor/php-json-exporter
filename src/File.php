@@ -33,7 +33,7 @@ class File
         return $collection;
     }
 
-    public function value(string $key, mixed $value):object{
+    public function value(): Value{
         if (isset($this->lastValue)) {
             $this->lastValue->endWithComma();
         }

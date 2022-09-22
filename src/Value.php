@@ -1,40 +1,39 @@
 <?php
 namespace Hyvor\JsonExporter;
 
-class Value implements ShouldEnd
+class Value extends ShouldEnd
 {
     public int $itemsCount = 0;
+    private Writer $writer;
     /**
      * @param string $key Key of the value
      * @param Writer $writer
      */
-    public function __construct(private Writer $writer)
+    public function __construct(Writer $writer)
     {
-        $this->writer->write("{");
+        $this->writer = $writer;
     }
 
-    public function addValue(string $key, mixed $value) : self
+    public function addItem(string $key, mixed $value) : self
     {
         $all = "";
-        $json = "\"$key\":". json_encode($value);
+        $item = "\"$key\":". json_encode($value);
         if ($this->itemsCount > 0) {
             $all .= ",";
         }
-        $all .= $json;
- 
+        $all .= $item;
         $this->itemsCount++;
-    
         $this->writer->write($all);
         return $this;
     }
 
     public function end() : void
     {
-        $this->writer->write('}');
+        // $this->writer->write('');
     }
 
     public function endWithComma() : void
     {
-        $this->writer->write("},");
+        $this->writer->write(",");
     }
 }

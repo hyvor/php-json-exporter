@@ -1,7 +1,7 @@
 <?php
 namespace Hyvor\JsonExporter;
 
-class Collection implements ShouldEnd
+class Collection extends ShouldEnd
 {
 
     public int $itemsCount = 0;
