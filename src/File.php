@@ -8,8 +8,7 @@ class File
 {
 
     private Writer $writer;
-
-    private Collection $lastCollection;
+    private ShouldEnd $lastValue;
 
     /**
      * @param string $filename The filename (with absolute or relative path) to write JSON to
@@ -23,15 +22,26 @@ class File
 
     public function collection(string $key): Collection
     {
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->endWithComma();
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
         }
 
         $collection = new Collection($key, $this->writer);
 
-        $this->lastCollection = $collection;
+        $this->lastValue = $collection;
 
         return $collection;
+    }
+
+    public function value(): Value{
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
+        }
+
+        $value = new Value($this->writer);
+
+        $this->lastValue = $value;
+        return $value;
     }
 
     private function start() : void
@@ -41,9 +51,8 @@ class File
 
     public function end() : self
     {
-
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->end();
+        if (isset($this->lastValue)) {
+            $this->lastValue->end();
         }
 
         $this->writer->write("}");
