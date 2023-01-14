@@ -9,7 +9,7 @@ class File
 
     private Writer $writer;
 
-    private Collection $lastCollection;
+    private ValueAbstract $lastValue;
 
     /**
      * @param string $filename The filename (with absolute or relative path) to write JSON to
@@ -23,15 +23,30 @@ class File
 
     public function collection(string $key): Collection
     {
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->endWithComma();
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
         }
 
         $collection = new Collection($key, $this->writer);
 
-        $this->lastCollection = $collection;
+        $this->lastValue = $collection;
 
         return $collection;
+    }
+
+    public function value(string $key, mixed $value, bool $encode = true) : self
+    {
+
+        if (isset($this->lastValue)) {
+            $this->lastValue->endWithComma();
+        }
+
+        $value = new Value($key, $value, $this->writer, $encode);
+
+        $this->lastValue = $value;
+
+        return $this;
+
     }
 
     private function start() : void
@@ -42,8 +57,8 @@ class File
     public function end() : self
     {
 
-        if (isset($this->lastCollection)) {
-            $this->lastCollection->end();
+        if (isset($this->lastValue)) {
+            $this->lastValue->end();
         }
 
         $this->writer->write("}");

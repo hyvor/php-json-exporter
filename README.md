@@ -1,16 +1,12 @@
 # JSON Exporter for PHP
 
-This library is a solution for a specific problem. Here is how it was born: 
-
-* At [Hyvor Talk](https://talk.hyvor.com), we have customers who have millions of comments.
-* They want to export their data regularly to backup or analyze.
-* Our first exporter was written to get all records from the database and create a JSON file from it. 
-* This process took all data into memory. It worked for small websites, but larger websites could not use this as the server crashed due to memory exhaustion.
-* So, we created this library to export data into a JSON file **in the disk** without taking it into the memory.
+> Why this library was created:
+> 
+> At [Hyvor Talk](https://talk.hyvor.com), we have customers who have millions of comments on their websites, who want to export their data regularly to backup and analyze. Our first exporter was written to get all records from the database and create a JSON file from it, which took all data into memory. It worked for small websites, but larger websites could not use this as the server crashed due to memory exhaustion.So, we created this library to export data into a JSON file **in the disk** without taking it into the memory.
 
 ## What you can do
 
-You can create a JSON file with the following format.
+The primary purpose of this library is to export large arrays of small objects (for example, table rows) into a JSON file in the disk. You can create a JSON file with multiple collections and direct values.
 
 ```jsonc
 {
@@ -24,11 +20,12 @@ You can create a JSON file with the following format.
         {},
         {},
         {}
-    ]
+    ],
+    "direct-value": "value"
 }
 ```
 
-Each object `{}` is a representation of a row in a table of your database. The arrays are expected to be long (contains a lot of objects/rows).
+Each object in a collection can be a representation of a row in a table of your database. The arrays are expected to be long (contains a lot of objects/rows).
 
 ## Installation
 
@@ -54,6 +51,13 @@ $postsCollection->addItems(getPosts());
 $postsCollection->addItems(getPosts(100));
 $postsCollection->addItems(getPosts(200));
 
+// add a direct value
+// the value will be JSON encoded
+// you can use arrays, objects, strings, numbers, booleans, null
+$file->value('direct-value', 'value');
+$file->value('direct-value-2', $myObject);
+$file->value('json-value', '{"name": "John"}', encode: false); // the value will not be JSON encoded
+
 // call this function finally
 $file->end();
 ```
@@ -67,13 +71,20 @@ In the above example, `getUsers()` and `getPosts()` are hypothetical functions t
     ],
     "posts": [
         // array of JSON-encoded post objects
-    ]
+    ],
+    
+    "direct-value": "value",
+    "direct-value-2": {
+        // JSON-encoded object
+    },
+    "json-value": {"name": "John"}
+    
 }
 ```
 
-## Laravel Example
+## Laravel Example for Collections
 
-You can use [Laravel Chunking](https://laravel.com/docs/9.x/eloquent#chunking-results).
+You can use [Laravel Chunking](https://laravel.com/docs/9.x/eloquent#chunking-results) to generate large collections.
 
 ```php
 use Hyvor\JsonExporter\File;
@@ -81,9 +92,7 @@ use Hyvor\JsonExporter\File;
 $file = new File('export-file.json');
 
 $usersCollection = $file->collection('users');
-User::chunk(200, function ($users) {
-    $usersCollection->addItems($users->toArray());
-});
+User::chunk(200, fn ($users) => $usersCollection->addItems($users->toArray()));
 
 $file->end();
 ```

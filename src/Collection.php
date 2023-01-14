@@ -1,7 +1,7 @@
 <?php
 namespace Hyvor\JsonExporter;
 
-class Collection
+class Collection extends ValueAbstract
 {
 
     public int $itemsCount = 0;

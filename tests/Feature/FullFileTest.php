@@ -26,11 +26,14 @@ it('creates a full JSON file', function() {
         $collection->addItems([$item, $item2]);
     }
 
+    $file->value('version', '1.0.0');
+
     $file->end();
 
     $json = json_decode($file->written(), true);
 
     expect($json['users'])->toBeArray();
     expect(count($json['users']))->toBe(20);
+    expect($json['version'])->toBe('1.0.0');
 
 });
