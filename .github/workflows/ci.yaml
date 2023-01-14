@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v3
+
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            coverage: "none"
+            php-version: "8.2"
+            ini-file: development
+            tools: composer:v2
+
+      -   name: Install dependencies
+          run: composer update --ansi --no-progress
+
+      -   name: Run tests
+          run: vendor/bin/pest
+
+  static_analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v3
+
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            coverage: "none"
+            php-version: "8.2"
+            ini-file: development
+
+      -   name: Install dependencies
+          run: composer update --ansi --no-progress
+
+      -   name: Run phpstan
+          run: vendor/bin/phpstan analyse --ansi --no-progress
