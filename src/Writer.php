@@ -43,7 +43,7 @@ class Writer
     {
         $wrote = fwrite($this->handler, $str);
 
-        if (!$wrote) {
+        if ($wrote === false) {
             throw new FileWriteException($this->filename, $str);
         }
 
